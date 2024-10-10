@@ -20,7 +20,7 @@
 .name, .last{
     margin: 5px 0;
 }
-.submit{
+.submit, .page2{
     margin: 5px 0;
     background-color: mediumblue;
     color: white;

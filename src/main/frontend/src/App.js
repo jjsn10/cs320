@@ -1,12 +1,20 @@
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
+import {useNavigate} from "react-router-dom";
 import './App.css'
 
 function App(){
+
+  const navigate = useNavigate();
+  const navigateToPage2 = () => {
+    navigate('/page2');
+  }
 
   const [message, setMessage] = useState("");
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   //const [submittedData, setSubmittedData] = useState(null);
+
+
 
   const handleSubmit = async (e)=>{
     e.preventDefault();
@@ -40,32 +48,34 @@ function App(){
   return (
       <div className="container">
         <div className="form-wrapper">
-        <form onSubmit={handleSubmit}>
-          <h2>Personalized Greeting</h2>
-          <div className="name">
-            <label>First Name: </label>
-            <input
-                type="text"
-                value={firstName}
-                onChange={(e) => setFirstName(e.target.value)}
-            />
-          </div>
-          <div className="last">
-            <label>Last Name: </label>
-            <input
-                type="text"
-                value={lastName}
-                onChange={(e) => setLastName(e.target.value)}
-            />
-          </div>
-          <button type="submit" className="submit">Submit</button>
-        </form>
+          <form onSubmit={handleSubmit}>
+            <h2>Personalized Greeting</h2>
+            <div className="name">
+              <label>First Name: </label>
+              <input
+                  type="text"
+                  value={firstName}
+                  onChange={(e) => setFirstName(e.target.value)}
+              />
+            </div>
+            <div className="last">
+              <label>Last Name: </label>
+              <input
+                  type="text"
+                  value={lastName}
+                  onChange={(e) => setLastName(e.target.value)}
+              />
+            </div>
+            <button type="submit" className="submit">Submit</button>
+            <button onClick={navigateToPage2} className="page2">Page 2</button>
+          </form>
         </div>
         {message && (
             <div>
             <p>{message}</p>
-          </div>
-      )}
+            </div>
+        )}
+
       </div>
   );
 }
