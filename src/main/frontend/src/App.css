@@ -1,30 +1,343 @@
-.container{
-    width: 500px;
-    height: 250px;
-    margin: 50px;
-    outline: solid 1px black;
+/* Basic styling */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+nav {
+    background-color: #333;
+    position: relative;
+}
+
+.menu {
+    list-style: none;
+    margin: 0;
+    padding: 0;
     display: flex;
-    justify-content: center;
-    flex-direction: column;
+    justify-content: center; /* Center the menu items */
+}
+
+.menu li {
+    margin: 0;
+}
+
+.menu a {
+    display: block;
+    padding: 14px 20px;
+    color: white;
+    text-decoration: none;
+    text-align: center;
+}
+
+.menu a:hover {
+    background-color: #575757;
+}
+
+/* Hamburger menu icon */
+.menu-icon {
+    display: none;
+    font-size: 30px;
+    color: white;
+    padding: 14px 20px;
+    cursor: pointer;
+}
+/* Hide the checkbox */
+#menu-toggle {
+    display: none;
+}
+
+/* Responsive styling */
+@media (max-width: 600px) {
+    .menu {
+        flex-direction: column;
+        align-items: center;
+        display: none; /* Hide menu by default */
+    }
+
+    .menu-icon {
+        display: block; /* Show hamburger icon */
+    }
+
+    #menu-toggle:checked + .menu-icon + .menu {
+        display: flex; /* Show menu when checkbox is checked */
+    }
+
+    .menu a {
+        padding: 10px;
+        width: 100%;
+        text-align: left;
+    }
+}
+
+/* Footer styling */
+footer {
+    background-color: #333;
+    color: white;
+    padding: 20px 0;
+    text-align: center;
+    /*position: fixed;*/
+    width: 100%;
+    bottom: 0;
+}
+
+.footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    justify-content: space-between;
     align-items: center;
 }
-.form-wrapper{
-    width: 300px;
+
+.footer-menu {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    margin: 0;
 }
-.form-wrapper form{
+
+.footer-menu li {
+    margin: 0 10px;
+}
+
+.footer-menu a {
+    color: white;
+    text-decoration: none;
+}
+
+.footer-menu a:hover {
+    color: #ddd;
+}
+
+@media (max-width: 600px) {
+    .footer-content {
+        justify-content: center;
+    }
+
+    .footer-menu {
+        display: none; /* Hide menu items on small screens */
+    }
+}
+
+/* Container styling */
+.container {
+    width: 80%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: row; /* Align items in a row */
+    justify-content: space-between;
+    align-items: flex-start;
+    /*padding-bottom: 80px; *//* Increase padding to prevent overlap with footer */
+    gap: 20px; /* Add space between sections */
+}
+
+/* Section styling */
+.section {
+    background-color: #f0f0f0;
+    padding: 20px;
+    box-sizing: border-box;
+    border: 2px solid #ccc; /* Add a border */
+    border-radius: 10px; /* Round the corners */
+    margin-bottom: 20px; /* Add some space between sections */
+}
+
+.left, .right {
+    width: 20%;
+    margin-top: 40px;
+}
+
+.middle {
+    width: 60%;
+    text-align: center; /* Center text in the middle section */
+    margin-bottom: 40px; /* Add margin to prevent overlap with footer */
+    overflow: hidden; /* Ensure content does not overflow */
+    background-color: #fff;
+    margin-top: 40px;
+}
+/* Center content in the left section */
+.left {
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
+    text-align: center;
 }
-.name, .last{
-    margin: 5px 0;
+
+/* Add this rule to center content in the right section */
+.right {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
 }
-.submit, .page2{
-    margin: 5px 0;
-    background-color: mediumblue;
+/* Add styling for the expense amount */
+.expense-amount {
+    font-size: 2em; /* Increase the font size */
+    margin: 10px 0;
+    color: red; /* Set the color to red */
+}
+
+/* Income amount styling */
+.income-amount {
+    font-size: 2em; /* Increase the font size */
+    margin: 10px 0;
+}
+
+
+/* Balance amount styling */
+.balance-amount {
+    font-size: 1.5em;
+    margin: 10px 0;
+}
+
+/* Table styling */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+td {
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+}
+td:first-child {
+    border-left: none; /* Remove left border for the first cell */
+}
+
+td:last-child {
+    border-right: none; /* Remove right border for the last cell */
+}
+
+/* Form styling */
+.form-separation {
+    margin-top: 80px; /* Adjust the value as needed */
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.form-select,
+.form-input {
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+}
+
+.form-button {
+    padding: 10px 20px;
+    background-color: #007bff;
     color: white;
     border: none;
-    padding: 8px 25px;
-    border-radius: 5px;
+    cursor: pointer;
+    border-radius: 8px; /* Round the corners */
+}
+
+.form-button:hover {
+    background-color: #0056b3;
+}
+
+/* Enhance Form Input Styling */
+.form-input, .form-select {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.form-input:focus, .form-select:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+/* org.acme.Category Component */
+.parent-container {
+    /*display: flex;
+    width: 80%;*/
+    height: 100%;
+    width: 80%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding-bottom: 80px;
+    gap: 20px;
+}
+.left-div, .right-div{
+    margin-bottom:40px;
+    margin-top: 40px;
+    border: 2px solid #ccc; /* Add a border */
+    border-radius: 10px; /* Round the corners */
+    box-sizing: border-box;
+}
+.left-div {
+    width: 40%;
+    background-color: lightblue;
+    padding: 20px; /* Adjust the value as needed */
+
+}
+.right-div {
+    width: 60%;
+    background-color: #fff;
+    padding: 20px; /* Adjust the value as needed */
+}
+
+.category-form {
+    width: 100%;
+}
+.form-heading {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.form-input {
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+}
+
+.form-button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius:5px;
+}
+
+/* Responsive styling */
+@media (max-width: 800px) {
+    .container {
+        flex-direction: column;
+        align-items: center; /* Center items vertically */
+    }
+
+    .left, .right, .middle {
+        width: 100%;
+    }
+
+    table {
+        width: 100%;
+    }
 }

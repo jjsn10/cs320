@@ -4,6 +4,9 @@ import './index.css';
 import App from './App';
 import Page2 from './Page2';
 import Navbar from './Navbar';
+import Footer from './Footer';
+import Category from './Category';
+import Report from './Report';
 //import reportWebVitals from './reportWebVitals';
 import {BrowserRouter, Routers, Router, Routes, Route} from "react-router-dom";
 
@@ -14,8 +17,10 @@ root.render(
           <Navbar />
           <Routes>
               <Route path="/" element={<App/>} />
-              <Route path="/page2" element={<Page2/>} />
+              <Route path="/category" element={<Category/>} />
+              <Route path="/report" element={<Report/>} />
           </Routes>
+          <Footer/>
       </BrowserRouter>
   </React.StrictMode>
 );
