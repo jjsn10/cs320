@@ -19,10 +19,31 @@ const Category = () => {
         });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        // Handle form submission logic here
-        console.log("Form Data:", formData);
+        try {
+            const response = await fetch("http://localhost:8080/api/categories", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(formData)
+            });
+            if (response.ok) {
+                const data = await response.json();
+                console.log("Category added:", data);
+                // Optionally, reset the form after successful submission
+                setFormData({
+                    name: "",
+                    description: "",
+                    color: ""
+                });
+            } else {
+                console.error("Failed to add category:", response.statusText);
+            }
+        } catch (error) {
+            console.error("There was an error adding the category!", error);
+        }
     };
 
     return (
