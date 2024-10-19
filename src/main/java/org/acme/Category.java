@@ -8,6 +8,7 @@ import java.util.List;
 
 @Entity
 @Table(name="Categories")
+
 public class Category extends PanacheEntity {
     public String name;
 
