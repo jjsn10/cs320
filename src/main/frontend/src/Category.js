@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrash, faEdit } from "@fortawesome/free-solid-svg-icons";
 import './App.css';
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faMinus, faPlus, faTrash, faEdit} from "@fortawesome/free-solid-svg-icons";
 
 const Category = () => {
     const [formData, setFormData] = useState({
@@ -10,6 +10,22 @@ const Category = () => {
         description: "",
         color: ""
     });
+    const [categories, setCategories] = useState([]);
+    const [message, setMessage] = useState("");
+
+    useEffect(() => {
+        fetchCategories();
+    }, []);
+
+    const fetchCategories = async () => {
+        try {
+            const response = await fetch("http://localhost:8080/api/categories");
+            const data = await response.json();
+            setCategories(data);
+        } catch (error) {
+            console.error("Error fetching categories:", error);
+        }
+    };
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -31,18 +47,36 @@ const Category = () => {
             });
             if (response.ok) {
                 const data = await response.json();
-                console.log("Category added:", data);
-                // Optionally, reset the form after successful submission
+                setMessage("Category added successfully!");
                 setFormData({
                     name: "",
                     description: "",
                     color: ""
                 });
+                fetchCategories(); // Refresh the list
             } else {
-                console.error("Failed to add category:", response.statusText);
+                setMessage("Failed to add category.");
             }
         } catch (error) {
-            console.error("There was an error adding the category!", error);
+            setMessage("There was an error adding the category!");
+            console.error(error);
+        }
+    };
+
+    const handleDelete = async (id) => {
+        try {
+            const response = await fetch(`http://localhost:8080/api/categories/${id}`, {
+                method: "DELETE"
+            });
+            if (response.ok) {
+                setMessage("Category deleted successfully!");
+                fetchCategories(); // Refresh the list
+            } else {
+                setMessage("Failed to delete category.");
+            }
+        } catch (error) {
+            setMessage("There was an error deleting the category!");
+            console.error(error);
         }
     };
 
@@ -50,6 +84,7 @@ const Category = () => {
         <div className="parent-container">
             <div className="left-div">
                 <h2 className="form-heading">Add Category</h2>
+                {message && <p>{message}</p>}
                 <form className="category-form" onSubmit={handleSubmit}>
                     <div className="form-group">
                         <label htmlFor="name" className="form-label">Name</label>
@@ -93,24 +128,24 @@ const Category = () => {
                 <h2 className="form-heading">List of Categories</h2>
                 <table>
                     <tbody>
-                    <tr>
-                        <td><FontAwesomeIcon icon={faEdit} style={{color: 'blue'}}/></td>
-                        <td>Salary</td>
-                        <td>Monthly Income</td>
-                        <td><FontAwesomeIcon icon={faTrash} style={{color: 'red'}}/></td>
-                    </tr>
-                    <tr>
-                        <td><FontAwesomeIcon icon={faEdit} style={{color: 'blue'}}/></td>
-                        <td>Shopping</td>
-                        <td>Groceries and Clean elements</td>
-                        <td><FontAwesomeIcon icon={faTrash} style={{color: 'red'}}/></td>
-                    </tr>
-                    <tr>
-                        <td><FontAwesomeIcon icon={faEdit} style={{color: 'blue'}}/></td>
-                        <td>Car</td>
-                        <td>Insurance, Gas or Cleaning</td>
-                        <td><FontAwesomeIcon icon={faTrash} style={{color: 'red'}}/></td>
-                    </tr>
+                    {categories.map((category) => (
+                        <tr key={category.id}>
+                            <td>
+                                <Link to={`/edit-category/${category.id}`}>
+                                    <FontAwesomeIcon icon={faEdit} style={{color: 'blue', cursor: 'pointer'}}/>
+                                </Link>
+                            </td>
+                            <td>{category.name}</td>
+                            <td>{category.description}</td>
+                            <td>
+                                <FontAwesomeIcon
+                                    icon={faTrash}
+                                    style={{color: 'red', cursor: 'pointer'}}
+                                    onClick={() => handleDelete(category.id)}
+                                />
+                            </td>
+                        </tr>
+                    ))}
                     </tbody>
                 </table>
             </div>

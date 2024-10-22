@@ -6,6 +6,7 @@ import Page2 from './Page2';
 import Navbar from './Navbar';
 import Footer from './Footer';
 import Category from './Category';
+import EditCategory from './EditCategory';
 import Report from './Report';
 //import reportWebVitals from './reportWebVitals';
 import {BrowserRouter, Routers, Router, Routes, Route} from "react-router-dom";
@@ -19,6 +20,7 @@ root.render(
               <Route path="/" element={<App/>} />
               <Route path="/category" element={<Category/>} />
               <Route path="/report" element={<Report/>} />
+              <Route path="/edit-category/:id" element={<EditCategory/>} />
           </Routes>
           <Footer/>
       </BrowserRouter>
