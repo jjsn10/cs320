@@ -125,7 +125,7 @@ public class GreetingResource {
 
     // Update
     @PUT
-    @Path("/{id}")
+    @Path("/transactions/{id}")
     public Response updateTransaction(@PathParam("id") Long id, Transaction updatedTransaction) {
         Transaction transaction = Transaction.findById(id);
         if (transaction == null) {
@@ -142,7 +142,8 @@ public class GreetingResource {
 
     // Delete
     @DELETE
-    @Path("/{id}")
+    @Path("/transactions/{id}")
+    @Transactional
     public Response deleteTransaction(@PathParam("id") Long id) {
         Transaction transaction = Transaction.findById(id);
         if (transaction == null) {

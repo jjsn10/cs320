@@ -18,10 +18,18 @@ const App = () => {
     date: new Date().toISOString().split('T')[0] // Set current date in YYYY-MM-DD format
   });
 
+  const [balance, setBalance] = useState(0); // New state for balance
+
   useEffect(() => {
     fetchTransactions();
     fetchCategories();
   }, []);
+
+  useEffect(() => {
+    calculateBalance();
+  }, [transactions]);
+
+
 
   const fetchTransactions = async () => {
     try {
@@ -119,6 +127,13 @@ const App = () => {
     form.id ? updateTransaction(form.id) : createTransaction();
   };
 
+  const calculateBalance = () => {
+    const income = transactions.filter(tx => tx.type === 1).reduce((acc, tx) => acc + parseFloat(tx.amount), 0);
+    const expense = transactions.filter(tx => tx.type === 2).reduce((acc, tx) => acc + parseFloat(tx.amount), 0);
+    const balance = income - expense;
+    setBalance(balance.toFixed(2)); // Round to two decimal places
+  };
+
   return (
       <div className="container">
         <div className="section left">
@@ -129,7 +144,7 @@ const App = () => {
         <div className="section middle">
           <h1>Expense Tracker</h1>
           <h3>Balance</h3>
-          <p className="balance-amount">$300</p>
+          <p className="balance-amount">${balance}</p>
           <table>
             <tbody>
             {transactions.map(tx => (
