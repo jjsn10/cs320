@@ -14,6 +14,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
+
 @Entity
 @Table(name="Transactions")
 public class Transaction extends PanacheEntity {
@@ -28,6 +29,7 @@ public class Transaction extends PanacheEntity {
     @ManyToOne
     @JoinColumn(name = "category_id")
     public Category category;
+
 
     // Create
     public static void addTransaction(Transaction transaction) {

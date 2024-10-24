@@ -1,23 +1,122 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus, faMinus, faTrash, faMoneyBillWave,faCreditCard } from '@fortawesome/free-solid-svg-icons';
-import './App.css'; // Make sure to create and import the CSS file
+import { faPlus, faMinus, faTrash, faMoneyBillWave, faCreditCard } from '@fortawesome/free-solid-svg-icons';
+import './App.css';
 
 const App = () => {
   const [type, setType] = useState('');
   const [category, setCategory] = useState('');
   const [amount, setAmount] = useState('');
+  const [transactions, setTransactions] = useState([]);
+  const [categories, setCategories] = useState([]); // New state for categories
+  const [form, setForm] = useState({
+    id: '',
+    description:'',
+    type: '',
+    category: '',
+    amount: '',
+    date: new Date().toISOString().split('T')[0] // Set current date in YYYY-MM-DD format
+  });
 
-  const handleTypeChange = (e) => {
-    setType(e.target.value);
+  useEffect(() => {
+    fetchTransactions();
+    fetchCategories();
+  }, []);
+
+  const fetchTransactions = async () => {
+    try {
+      const response = await fetch('http://localhost:8080/api/transactions');
+      const data = await response.json();
+      setTransactions(data);
+    } catch (error) {
+      console.error('Error fetching transactions:', error);
+    }
+  };
+  const fetchCategories = async () => {
+    try {
+      const response = await fetch('http://localhost:8080/api/categories'); // Adjust the endpoint as needed
+      const data = await response.json();
+      setCategories(data);
+    } catch (error) {
+      console.error('Error fetching categories:', error);
+    }
   };
 
-  const handleCategoryChange = (e) => {
-    setCategory(e.target.value);
+  const createTransaction = async () => {
+    try {
+      const response = await fetch('http://localhost:8080/api/transactions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(form),
+      });
+      const data = await response.json();
+      setTransactions([...transactions, data]);
+      setForm({
+        id: '',
+        description:'',
+        type: '',
+        category: '',
+        amount: '',
+        date: new Date().toISOString().split('T')[0] // Reset to current date
+      });
+    } catch (error) {
+      console.error('Error creating transaction:', error);
+    }
   };
 
-  const handleAmountChange = (e) => {
-    setAmount(e.target.value);
+  const updateTransaction = async (id) => {
+    try {
+      const response = await fetch(`http://localhost:8080/api/transactions/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(form),
+      });
+      const data = await response.json();
+      setTransactions(transactions.map(tx => (tx.id === id ? data : tx)));
+      setForm({
+        id: '',
+        description:'',
+        type: '',
+        category: '',
+        amount: '',
+        date: new Date().toISOString().split('T')[0] // Reset to current date
+      });
+    } catch (error) {
+      console.error('Error updating transaction:', error);
+    }
+  };
+
+  const deleteTransaction = async (id) => {
+    try {
+      await fetch(`http://localhost:8080/api/transactions/${id}`, {
+        method: 'DELETE',
+      });
+      setTransactions(transactions.filter(tx => tx.id !== id));
+    } catch (error) {
+      console.error('Error deleting transaction:', error);
+    }
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    if (name === "category") {
+      const selectedCategory = categories.find(cat => cat.id === parseInt(value));
+      setForm({ ...form, [name]: selectedCategory });
+    } else {
+      setForm({ ...form, [name]: value });
+    }
+  };
+  /*const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };*/
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    form.id ? updateTransaction(form.id) : createTransaction();
   };
 
   return (
@@ -33,45 +132,45 @@ const App = () => {
           <p className="balance-amount">$300</p>
           <table>
             <tbody>
-            <tr>
-              <td><FontAwesomeIcon icon={faPlus} style={{ color: 'green' }} /></td>
-              <td>$500</td>
-              <td>Salary</td>
-              <td>2020-11-16</td>
-              <td><FontAwesomeIcon icon={faTrash} style={{ color: 'red' }} /></td>
-            </tr>
-            <tr>
-              <td><FontAwesomeIcon icon={faMinus} style={{ color: 'red' }} /></td>
-              <td>$75</td>
-              <td>Shopping</td>
-              <td>2020-11-16</td>
-              <td><FontAwesomeIcon icon={faTrash} style={{ color: 'red' }} /></td>
-            </tr>
-            <tr>
-              <td><FontAwesomeIcon icon={faMinus} style={{ color: 'red' }} /></td>
-              <td>$125</td>
-              <td>Car</td>
-              <td>2020-11-16</td>
-              <td><FontAwesomeIcon icon={faTrash} style={{ color: 'red' }} /></td>
-            </tr>
+            {transactions.map(tx => (
+                <tr key={tx.id}>
+                  <td><FontAwesomeIcon icon={tx.type === 1 ? faPlus : faMinus} style={{ color: tx.type === 1 ? 'green' : 'red' }} /></td>
+                  <td>${tx.amount}</td>
+                  <td>{tx.description}</td>
+                  <td>{new Date(tx.date).toISOString().split('T')[0]}</td>
+                  <td><FontAwesomeIcon icon={faTrash} style={{ color: 'red' }} onClick={() => deleteTransaction(tx.id)} /></td>
+                </tr>
+            ))}
             </tbody>
           </table>
-          <form className="form-separation">
+          <form className="form-separation" onSubmit={handleSubmit}>
+            <div className="form-group">
+              <label htmlFor="description" className="form-label">Description:</label>
+              <input
+                  type="text"
+                  id="description"
+                  name="description"
+                  placeholder="description"
+                  value={form.description}
+                  onChange={handleChange}
+                  className="form-input"
+              />
+            </div>
             <div className="form-group">
               <label htmlFor="type" className="form-label">Type:</label>
-              <select id="type" value={type} onChange={handleTypeChange} className="form-select">
+              <select id="type" name="type" value={form.type} onChange={handleChange} className="form-select">
                 <option value="">Select Type</option>
-                <option value="Income">Income</option>
-                <option value="Expense">Expense</option>
+                <option value="1">Income</option>
+                <option value="2">Expense</option>
               </select>
             </div>
             <div className="form-group">
               <label htmlFor="category" className="form-label">Category:</label>
-              <select id="category" value={category} onChange={handleCategoryChange} className="form-select">
+              <select id="category" name="category" value={form.category} onChange={handleChange} className="form-select">
                 <option value="">Select Category</option>
-                <option value="Salary">Salary</option>
-                <option value="Shopping">Shopping</option>
-                <option value="Car">Car</option>
+                {categories.map(cat => (
+                    <option key={cat.id} value={cat.id}>{cat.name}</option>
+                ))}
               </select>
             </div>
             <div className="form-group">
@@ -81,8 +180,8 @@ const App = () => {
                   id="amount"
                   name="amount"
                   placeholder="Amount"
-                  value={amount}
-                  onChange={handleAmountChange}
+                  value={form.amount}
+                  onChange={handleChange}
                   className="form-input"
               />
             </div>
