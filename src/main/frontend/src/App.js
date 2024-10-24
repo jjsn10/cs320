@@ -18,7 +18,10 @@ const App = () => {
     date: new Date().toISOString().split('T')[0] // Set current date in YYYY-MM-DD format
   });
 
+  const [selectedCategoryId, setSelectedCategoryId] = useState(''); // New state for selected category ID
   const [balance, setBalance] = useState(0); // New state for balance
+  const [totalExpenses, setTotalExpenses] = useState(0); // New state for total expenses
+  const [totalIncomes, setTotalIncomes] = useState(0); // New state for total incomes
 
   useEffect(() => {
     fetchTransactions();
@@ -27,6 +30,8 @@ const App = () => {
 
   useEffect(() => {
     calculateBalance();
+    calculateTotalExpenses();
+    calculateTotalIncomes();
   }, [transactions]);
 
 
@@ -69,6 +74,7 @@ const App = () => {
         amount: '',
         date: new Date().toISOString().split('T')[0] // Reset to current date
       });
+      setSelectedCategoryId(''); // Reset selected category ID
     } catch (error) {
       console.error('Error creating transaction:', error);
     }
@@ -113,6 +119,7 @@ const App = () => {
     const { name, value } = e.target;
     if (name === "category") {
       const selectedCategory = categories.find(cat => cat.id === parseInt(value));
+      setSelectedCategoryId(value);
       setForm({ ...form, [name]: selectedCategory });
     } else {
       setForm({ ...form, [name]: value });
@@ -134,12 +141,22 @@ const App = () => {
     setBalance(balance.toFixed(2)); // Round to two decimal places
   };
 
+  const calculateTotalExpenses = () => {
+    const expense = transactions.filter(tx => tx.type === 2).reduce((acc, tx) => acc + parseFloat(tx.amount), 0);
+    setTotalExpenses(expense.toFixed(2)); // Round to two decimal places
+  };
+
+  const calculateTotalIncomes = () => {
+    const income = transactions.filter(tx => tx.type === 1).reduce((acc, tx) => acc + parseFloat(tx.amount), 0);
+    setTotalIncomes(income.toFixed(2)); // Round to two decimal places
+  };
+
   return (
       <div className="container">
         <div className="section left">
           <h1>Incomes</h1>
           <FontAwesomeIcon icon={faMoneyBillWave} size="4x" style={{ color: 'green' }} />
-          <p className="income-amount">$500</p>
+          <p className="income-amount">${totalIncomes}</p>
         </div>
         <div className="section middle">
           <h1>Expense Tracker</h1>
@@ -181,7 +198,7 @@ const App = () => {
             </div>
             <div className="form-group">
               <label htmlFor="category" className="form-label">Category:</label>
-              <select id="category" name="category" value={form.category} onChange={handleChange} className="form-select">
+              <select id="category" name="category" value={selectedCategoryId} onChange={handleChange} className="form-select">
                 <option value="">Select Category</option>
                 {categories.map(cat => (
                     <option key={cat.id} value={cat.id}>{cat.name}</option>
@@ -191,7 +208,7 @@ const App = () => {
             <div className="form-group">
               <label htmlFor="amount" className="form-label">Amount:</label>
               <input
-                  type="text"
+                  type="number"
                   id="amount"
                   name="amount"
                   placeholder="Amount"
@@ -206,7 +223,7 @@ const App = () => {
         <div className="section right">
           <h1>Expenses</h1>
           <FontAwesomeIcon icon={faCreditCard} size="4x" style={{color: 'red'}}/>
-          <p className="expense-amount">$200</p>
+          <p className="expense-amount">${totalExpenses}</p>
         </div>
       </div>
   );
