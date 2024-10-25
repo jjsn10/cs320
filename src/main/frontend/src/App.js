@@ -38,7 +38,7 @@ const App = () => {
 
   const fetchTransactions = async () => {
     try {
-      const response = await fetch('http://localhost:8080/api/transactions');
+      const response = await fetch('https://7ke1tlhjia.execute-api.us-west-1.amazonaws.com/api/transactions');
       const data = await response.json();
       setTransactions(data);
     } catch (error) {
@@ -47,7 +47,7 @@ const App = () => {
   };
   const fetchCategories = async () => {
     try {
-      const response = await fetch('http://localhost:8080/api/categories'); // Adjust the endpoint as needed
+      const response = await fetch('https://7ke1tlhjia.execute-api.us-west-1.amazonaws.com/api/categories'); // Adjust the endpoint as needed
       const data = await response.json();
       setCategories(data);
     } catch (error) {

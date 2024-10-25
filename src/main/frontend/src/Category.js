@@ -19,7 +19,7 @@ const Category = () => {
 
     const fetchCategories = async () => {
         try {
-            const response = await fetch("http://localhost:8080/api/categories");
+            const response = await fetch("https://7ke1tlhjia.execute-api.us-west-1.amazonaws.com/api/categories");
             const data = await response.json();
             setCategories(data);
         } catch (error) {
@@ -38,7 +38,7 @@ const Category = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch("http://localhost:8080/api/categories", {
+            const response = await fetch("https://7ke1tlhjia.execute-api.us-west-1.amazonaws.com/api/categories", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -65,7 +65,7 @@ const Category = () => {
 
     const handleDelete = async (id) => {
         try {
-            const response = await fetch(`http://localhost:8080/api/categories/${id}`, {
+            const response = await fetch(`https://7ke1tlhjia.execute-api.us-west-1.amazonaws.com/api/categories/${id}`, {
                 method: "DELETE"
             });
             if (response.ok) {
