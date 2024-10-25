@@ -38,7 +38,7 @@ const App = () => {
 
   const fetchTransactions = async () => {
     try {
-      const response = await fetch('https://7ke1tlhjia.execute-api.us-west-1.amazonaws.com/api/transactions');
+      const response = await fetch('/api/transactions');
       const data = await response.json();
       setTransactions(data);
     } catch (error) {
@@ -47,7 +47,7 @@ const App = () => {
   };
   const fetchCategories = async () => {
     try {
-      const response = await fetch('https://7ke1tlhjia.execute-api.us-west-1.amazonaws.com/api/categories'); // Adjust the endpoint as needed
+      const response = await fetch('/api/categories'); // Adjust the endpoint as needed
       const data = await response.json();
       setCategories(data);
     } catch (error) {
@@ -57,7 +57,7 @@ const App = () => {
 
   const createTransaction = async () => {
     try {
-      const response = await fetch('http://localhost:8080/api/transactions', {
+      const response = await fetch('/api/transactions', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -82,7 +82,7 @@ const App = () => {
 
   const updateTransaction = async (id) => {
     try {
-      const response = await fetch(`http://localhost:8080/api/transactions/${id}`, {
+      const response = await fetch(`/api/transactions/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -106,7 +106,7 @@ const App = () => {
 
   const deleteTransaction = async (id) => {
     try {
-      await fetch(`http://localhost:8080/api/transactions/${id}`, {
+      await fetch(`/api/transactions/${id}`, {
         method: 'DELETE',
       });
       setTransactions(transactions.filter(tx => tx.id !== id));

@@ -1,11 +1,82 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from 'react';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, LabelList } from 'recharts';
+import './App.css'; // Import the CSS file
 
-function Report(){
+const Report = () => {
+    const [incomeData, setIncomeData] = useState([]);
+    const [expenseData, setExpenseData] = useState([]);
+
+    useEffect(() => {
+        // Fetch data from the API
+        fetch('/api/transactions')
+            .then(response => response.json())
+            .then(data => {
+                // Separate incomes and expenses
+                const incomes = data.filter(transaction => transaction.type === 1);
+                const expenses = data.filter(transaction => transaction.type === 2);
+
+                // Process the data to group by category and sum the amounts
+                const groupData = (transactions) => {
+                    return transactions.reduce((acc, transaction) => {
+                        const category = transaction.category.name;
+                        if (!acc[category]) {
+                            acc[category] = 0;
+                        }
+                        acc[category] += transaction.amount;
+                        return acc;
+                    }, {});
+                };
+
+                const incomeGroupedData = groupData(incomes);
+                const expenseGroupedData = groupData(expenses);
+
+                // Convert the grouped data into an array format suitable for recharts
+                const formatChartData = (groupedData) => {
+                    return Object.keys(groupedData).map(category => ({
+                        name: category,
+                        amount: groupedData[category]
+                    }));
+                };
+
+                setIncomeData(formatChartData(incomeGroupedData));
+                setExpenseData(formatChartData(expenseGroupedData));
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);
+            });
+    }, []);
+
     return (
-        <div>
-            <h1>Report</h1>
+        <div className="container">
+            <div className="chart-container">
+                <h2>Incomes by Category</h2>
+                <BarChart width={600} height={300} data={incomeData}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="name" />
+                    <YAxis />
+                    <Tooltip />
+                    <Legend />
+                    <Bar dataKey="amount" fill="#82ca9d">
+                        <LabelList dataKey="amount" position="top" />
+                    </Bar>
+                </BarChart>
+            </div>
+
+            <div className="chart-container">
+                <h2>Expenses by Category</h2>
+                <BarChart width={600} height={300} data={expenseData}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="name" />
+                    <YAxis />
+                    <Tooltip />
+                    <Legend />
+                    <Bar dataKey="amount" fill="#8884d8">
+                        <LabelList dataKey="amount" position="top" />
+                    </Bar>
+                </BarChart>
+            </div>
         </div>
-    )
-}
+    );
+};
+
 export default Report;

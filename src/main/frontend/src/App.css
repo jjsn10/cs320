@@ -325,6 +325,12 @@ td:last-child {
     cursor: pointer;
     border-radius:5px;
 }
+/* Report bar chart and container css */
+.chart-container {
+    flex: 1;
+    margin: 10px;
+    padding: 20px;
+}
 
 /* Responsive styling */
 @media (max-width: 800px) {
