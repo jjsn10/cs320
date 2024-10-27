@@ -18,7 +18,7 @@ const EditCategory = () => {
 
     const fetchCategory = async () => {
         try {
-            const response = await fetch(`https://7ke1tlhjia.execute-api.us-west-1.amazonaws.com/api/categories/${id}`);
+            const response = await fetch(`/api/categories/${id}`);
             const data = await response.json();
             setFormData(data);
         } catch (error) {
@@ -38,7 +38,7 @@ const EditCategory = () => {
         e.preventDefault();
 
         try {
-            const response = await fetch(`https://7ke1tlhjia.execute-api.us-west-1.amazonaws.com/api/categories/${id}`, {
+            const response = await fetch(`/api/categories/${id}`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json"

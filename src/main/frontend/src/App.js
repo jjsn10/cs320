@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faMinus, faTrash, faMoneyBillWave, faCreditCard } from '@fortawesome/free-solid-svg-icons';
 import './App.css';
@@ -166,7 +167,11 @@ const App = () => {
             <tbody>
             {transactions.map(tx => (
                 <tr key={tx.id}>
-                  <td><FontAwesomeIcon icon={tx.type === 1 ? faPlus : faMinus} style={{ color: tx.type === 1 ? 'green' : 'red' }} /></td>
+                  <td>
+                    <Link to={`/edit-transaction/${tx.id}`}>
+                    <FontAwesomeIcon icon={tx.type === 1 ? faPlus : faMinus} style={{ color: tx.type === 1 ? 'green' : 'red',cursor: 'pointer' }} />
+                    </Link>
+                    </td>
                   <td>${tx.amount}</td>
                   <td>{tx.description}</td>
                   <td>{new Date(tx.date).toISOString().split('T')[0]}</td>

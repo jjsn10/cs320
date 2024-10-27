@@ -10,6 +10,7 @@ import EditCategory from './EditCategory';
 import Report from './Report';
 //import reportWebVitals from './reportWebVitals';
 import {BrowserRouter, Routers, Router, Routes, Route} from "react-router-dom";
+import UpdateTransaction from "./UpdateTransaction";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -21,6 +22,7 @@ root.render(
               <Route path="/category" element={<Category/>} />
               <Route path="/report" element={<Report/>} />
               <Route path="/edit-category/:id" element={<EditCategory/>} />
+              <Route path="/edit-transaction/:id" element={<UpdateTransaction/>} />
           </Routes>
           <Footer/>
       </BrowserRouter>

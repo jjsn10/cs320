@@ -126,6 +126,7 @@ public class GreetingResource {
     // Update
     @PUT
     @Path("/transactions/{id}")
+    @Transactional
     public Response updateTransaction(@PathParam("id") Long id, Transaction updatedTransaction) {
         Transaction transaction = Transaction.findById(id);
         if (transaction == null) {
