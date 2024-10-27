@@ -59,8 +59,8 @@ const EditCategory = () => {
     };
 
     return (
-        <div className="parent-container">
-            <div className="left-div">
+        <div className="container">
+            <div className="left-div updateTx">
                 <h2 className="form-heading">Edit Category</h2>
                 {message && <p>{message}</p>}
                 <form className="category-form" onSubmit={handleSubmit}>

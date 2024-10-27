@@ -141,6 +141,9 @@ footer {
     border-radius: 10px; /* Round the corners */
     margin-bottom: 20px; /* Add some space between sections */
 }
+.updateTx{
+    margin: 0 auto;
+}
 
 .left, .right {
     width: 20%;
@@ -291,6 +294,7 @@ td:last-child {
     width: 60%;
     background-color: #fff;
     padding: 20px; /* Adjust the value as needed */
+    overflow: hidden; /* Ensure content does not overflow */
 }
 
 .category-form {
@@ -334,16 +338,19 @@ td:last-child {
 
 /* Responsive styling */
 @media (max-width: 800px) {
-    .container {
+    .container , .parent-container {
         flex-direction: column;
         align-items: center; /* Center items vertically */
     }
 
-    .left, .right, .middle {
+    .left, .right, .middle, .left-div, .right-div, .recharts-wrapper {
         width: 100%;
     }
 
     table {
         width: 100%;
     }
+    /*footer{
+        position:relative;
+    }*/
 }

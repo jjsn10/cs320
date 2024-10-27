@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, LabelList } from 'recharts';
+import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, LabelList } from 'recharts';
 import './App.css'; // Import the CSS file
 
 const Report = () => {
@@ -48,9 +48,10 @@ const Report = () => {
 
     return (
         <div className="container">
-            <div className="chart-container">
+            <div className="chart-container section middle">
                 <h2>Incomes by Category</h2>
-                <BarChart width={600} height={300} data={incomeData}>
+                <ResponsiveContainer width="100%" height={300}>
+                <BarChart data={incomeData}>
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="name" />
                     <YAxis />
@@ -60,11 +61,13 @@ const Report = () => {
                         <LabelList dataKey="amount" position="top" />
                     </Bar>
                 </BarChart>
+                </ResponsiveContainer>
             </div>
 
-            <div className="chart-container">
+            <div className="chart-container section middle">
                 <h2>Expenses by Category</h2>
-                <BarChart width={600} height={300} data={expenseData}>
+                <ResponsiveContainer width="100%" height={300}>
+                <BarChart data={expenseData}>
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="name" />
                     <YAxis />
@@ -74,6 +77,7 @@ const Report = () => {
                         <LabelList dataKey="amount" position="top" />
                     </Bar>
                 </BarChart>
+                </ResponsiveContainer>
             </div>
         </div>
     );

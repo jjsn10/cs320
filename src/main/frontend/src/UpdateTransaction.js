@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import './App.css';
 
 const UpdateTransaction = () => {
     const { id } = useParams();
@@ -93,50 +94,57 @@ const UpdateTransaction = () => {
     };
 
     return (
-        <form className="form-separation" onSubmit={handleSubmit}>
-            <div className="form-group">
-                <label htmlFor="description" className="form-label">Description:</label>
-                <input
-                    type="text"
-                    id="description"
-                    name="description"
-                    placeholder="description"
-                    value={form.description}
-                    onChange={handleChange}
-                    className="form-input"
-                />
+        <div className="container">
+            <div className="section middle updateTx">
+                <h1>Expense Tracker</h1>
+                <h3>Update Transaction</h3>
+                <form className="form-separation" onSubmit={handleSubmit}>
+                    <div className="form-group">
+                        <label htmlFor="description" className="form-label">Description:</label>
+                        <input
+                            type="text"
+                            id="description"
+                            name="description"
+                            placeholder="description"
+                            value={form.description}
+                            onChange={handleChange}
+                            className="form-input"
+                        />
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="type" className="form-label">Type:</label>
+                        <select id="type" name="type" value={form.type} onChange={handleChange} className="form-select">
+                            <option value="">Select Type</option>
+                            <option value="1">Income</option>
+                            <option value="2">Expense</option>
+                        </select>
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="category" className="form-label">Category:</label>
+                        <select id="category" name="category" value={selectedCategoryId} onChange={handleChange}
+                                className="form-select">
+                            <option value="">Select Category</option>
+                            {categories.map(cat => (
+                                <option key={cat.id} value={cat.id}>{cat.name}</option>
+                            ))}
+                        </select>
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="amount" className="form-label">Amount:</label>
+                        <input
+                            type="number"
+                            id="amount"
+                            name="amount"
+                            placeholder="Amount"
+                            value={form.amount}
+                            onChange={handleChange}
+                            className="form-input"
+                        />
+                    </div>
+                    <button type="submit" className="form-button">Save</button>
+                </form>
             </div>
-            <div className="form-group">
-                <label htmlFor="type" className="form-label">Type:</label>
-                <select id="type" name="type" value={form.type} onChange={handleChange} className="form-select">
-                    <option value="">Select Type</option>
-                    <option value="1">Income</option>
-                    <option value="2">Expense</option>
-                </select>
-            </div>
-            <div className="form-group">
-                <label htmlFor="category" className="form-label">Category:</label>
-                <select id="category" name="category" value={selectedCategoryId} onChange={handleChange} className="form-select">
-                    <option value="">Select Category</option>
-                    {categories.map(cat => (
-                        <option key={cat.id} value={cat.id}>{cat.name}</option>
-                    ))}
-                </select>
-            </div>
-            <div className="form-group">
-                <label htmlFor="amount" className="form-label">Amount:</label>
-                <input
-                    type="number"
-                    id="amount"
-                    name="amount"
-                    placeholder="Amount"
-                    value={form.amount}
-                    onChange={handleChange}
-                    className="form-input"
-                />
-            </div>
-            <button type="submit" className="form-button">Save</button>
-        </form>
+        </div>
     );
 };
 
