@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash, faEdit } from "@fortawesome/free-solid-svg-icons";
 import './App.css';
+import { API_URL } from './config';
 
 const Category = () => {
     const [formData, setFormData] = useState({
@@ -19,7 +20,7 @@ const Category = () => {
 
     const fetchCategories = async () => {
         try {
-            const response = await fetch("/api/categories");
+            const response = await fetch(`${API_URL}/api/categories`);
             const data = await response.json();
             setCategories(data);
         } catch (error) {
@@ -38,7 +39,7 @@ const Category = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch("/api/categories", {
+            const response = await fetch(`${API_URL}/api/categories`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -65,7 +66,7 @@ const Category = () => {
 
     const handleDelete = async (id) => {
         try {
-            const response = await fetch(`/api/categories/${id}`, {
+            const response = await fetch(`${API_URL}/api/categories/${id}`, {
                 method: "DELETE"
             });
             if (response.ok) {

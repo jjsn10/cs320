@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import './App.css';
+import { API_URL } from './config';
 
 const EditCategory = () => {
     const { id } = useParams();
@@ -18,7 +19,7 @@ const EditCategory = () => {
 
     const fetchCategory = async () => {
         try {
-            const response = await fetch(`/api/categories/${id}`);
+            const response = await fetch(`${API_URL}/api/categories/${id}`);
             const data = await response.json();
             setFormData(data);
         } catch (error) {
@@ -38,7 +39,7 @@ const EditCategory = () => {
         e.preventDefault();
 
         try {
-            const response = await fetch(`/api/categories/${id}`, {
+            const response = await fetch(`${API_URL}/api/categories/${id}`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json"

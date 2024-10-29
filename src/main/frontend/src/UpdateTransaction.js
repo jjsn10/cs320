@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import './App.css';
+import { API_URL } from './config';
 
 const UpdateTransaction = () => {
     const { id } = useParams();
@@ -24,7 +25,7 @@ const UpdateTransaction = () => {
 
     const fetchTransaction = async (transactionId) => {
         try {
-            const response = await fetch(`/api/transactions/${transactionId}`);
+            const response = await fetch(`${API_URL}/api/transactions/${transactionId}`);
             const transaction = await response.json();
             setForm({
                 description: transaction.description,
@@ -41,7 +42,7 @@ const UpdateTransaction = () => {
 
     const fetchCategories = async () => {
         try {
-            const response = await fetch('/api/categories');
+            const response = await fetch(`${API_URL}/api/categories`);
             const data = await response.json();
             setCategories(data);
         } catch (error) {
@@ -68,7 +69,7 @@ const UpdateTransaction = () => {
 
     const updateTransaction = async (id, form) => {
         try {
-            const response = await fetch(`/api/transactions/${id}`, {
+            const response = await fetch(`${API_URL}/api/transactions/${id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',

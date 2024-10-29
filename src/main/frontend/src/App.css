@@ -128,7 +128,7 @@ footer {
     flex-direction: row; /* Align items in a row */
     justify-content: space-between;
     align-items: flex-start;
-    /*padding-bottom: 80px; *//* Increase padding to prevent overlap with footer */
+    padding-bottom: 120px;
     gap: 20px; /* Add space between sections */
 }
 

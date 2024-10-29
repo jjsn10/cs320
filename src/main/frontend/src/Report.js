@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, LabelList } from 'recharts';
 import './App.css'; // Import the CSS file
+import { API_URL } from './config';
 
 const Report = () => {
     const [incomeData, setIncomeData] = useState([]);
@@ -8,7 +9,7 @@ const Report = () => {
 
     useEffect(() => {
         // Fetch data from the API
-        fetch('/api/transactions')
+        fetch(`${API_URL}/api/transactions`)
             .then(response => response.json())
             .then(data => {
                 // Separate incomes and expenses

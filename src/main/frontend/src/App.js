@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faMinus, faTrash, faMoneyBillWave, faCreditCard } from '@fortawesome/free-solid-svg-icons';
 import './App.css';
+import { API_URL } from './config';
 
 const App = () => {
   const [type, setType] = useState('');
@@ -39,7 +40,7 @@ const App = () => {
 
   const fetchTransactions = async () => {
     try {
-      const response = await fetch('/api/transactions');
+      const response = await fetch(`${API_URL}/api/transactions`);
       const data = await response.json();
       setTransactions(data);
     } catch (error) {
@@ -48,7 +49,7 @@ const App = () => {
   };
   const fetchCategories = async () => {
     try {
-      const response = await fetch('/api/categories'); // Adjust the endpoint as needed
+      const response = await fetch(`${API_URL}/api/categories`); // Adjust the endpoint as needed
       const data = await response.json();
       setCategories(data);
     } catch (error) {
@@ -58,7 +59,7 @@ const App = () => {
 
   const createTransaction = async () => {
     try {
-      const response = await fetch('/api/transactions', {
+      const response = await fetch(`${API_URL}/api/transactions`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -83,7 +84,7 @@ const App = () => {
 
   const updateTransaction = async (id) => {
     try {
-      const response = await fetch(`/api/transactions/${id}`, {
+      const response = await fetch(`${API_URL}/api/transactions/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -107,7 +108,7 @@ const App = () => {
 
   const deleteTransaction = async (id) => {
     try {
-      await fetch(`/api/transactions/${id}`, {
+      await fetch(`${API_URL}/api/transactions/${id}`, {
         method: 'DELETE',
       });
       setTransactions(transactions.filter(tx => tx.id !== id));
