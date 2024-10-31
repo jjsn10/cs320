@@ -6,11 +6,18 @@ import './App.css';
 import { API_URL } from './config';
 
 const Category = () => {
+    /*
+    formData: store the values from the form fields
+     */
     const [formData, setFormData] = useState({
         name: "",
         description: "",
         color: ""
     });
+
+    /*
+    categories: store the categories got from the function fetchCategories
+     */
     const [categories, setCategories] = useState([]);
     const [message, setMessage] = useState("");
 
@@ -18,6 +25,9 @@ const Category = () => {
         fetchCategories();
     }, []);
 
+    /*
+    Getting All categories to list them in a table
+     */
     const fetchCategories = async () => {
         try {
             const response = await fetch(`${API_URL}/api/categories`);
@@ -36,6 +46,9 @@ const Category = () => {
         });
     };
 
+    /*
+    submitting formData with values to create a new category
+     */
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
@@ -64,6 +77,9 @@ const Category = () => {
         }
     };
 
+    /*
+    Deleting a category sending the id of category to eliminate
+     */
     const handleDelete = async (id) => {
         try {
             const response = await fetch(`${API_URL}/api/categories/${id}`, {

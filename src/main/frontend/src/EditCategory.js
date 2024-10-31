@@ -4,19 +4,25 @@ import './App.css';
 import { API_URL } from './config';
 
 const EditCategory = () => {
-    const { id } = useParams();
-    const navigate = useNavigate();
+
+    const { id } = useParams(); // getting id of category to update
+    const navigate = useNavigate(); // use to redirect to the list of category after updating a category
     const [formData, setFormData] = useState({
         name: "",
         description: "",
         color: ""
     });
-    const [message, setMessage] = useState("");
+
+    const [message, setMessage] = useState("");// store message getting from errors or successful update
 
     useEffect(() => {
         fetchCategory();
     }, []);
 
+    /*
+    Getting the category to update
+    Parameter: id
+     */
     const fetchCategory = async () => {
         try {
             const response = await fetch(`${API_URL}/api/categories/${id}`);
@@ -35,6 +41,9 @@ const EditCategory = () => {
         });
     };
 
+    /*
+    Submitting the value of the form data to update the category
+     */
     const handleSubmit = async (e) => {
         e.preventDefault();
 
@@ -48,8 +57,7 @@ const EditCategory = () => {
             });
             if (response.ok) {
                 setMessage("Category updated successfully!");
-                //navigate("/"); // Redirect to the main page
-                navigate("/category");
+                navigate("/category"); // Redirect to the main category page
             } else {
                 setMessage("Failed to update category.");
             }

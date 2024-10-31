@@ -3,9 +3,16 @@ import { useParams, useNavigate } from 'react-router-dom';
 import './App.css';
 import { API_URL } from './config';
 
+/*
+Getting data from App.js to update a specific transaction
+ */
 const UpdateTransaction = () => {
-    const { id } = useParams();
-    const navigate = useNavigate();
+    const { id } = useParams(); // Getting data from url
+    const navigate = useNavigate(); // use to redirect to main page App.js
+
+    /*
+    Store the values of the form
+     */
     const [form, setForm] = useState({
         description: '',
         type: '',
@@ -13,8 +20,9 @@ const UpdateTransaction = () => {
         amount: '',
         date: new Date().toISOString().split('T')[0]
     });
-    const [categories, setCategories] = useState([]);
-    const [selectedCategoryId, setSelectedCategoryId] = useState('');
+
+    const [categories, setCategories] = useState([]); // Store the values of the categories retrieved
+    const [selectedCategoryId, setSelectedCategoryId] = useState(''); // Store the selected value from the form
 
     useEffect(() => {
         fetchCategories();
@@ -23,6 +31,10 @@ const UpdateTransaction = () => {
         }
     }, [id]);
 
+    /*
+    getting a specific transaction to fill out the transaction form
+    Parameter: id
+     */
     const fetchTransaction = async (transactionId) => {
         try {
             const response = await fetch(`${API_URL}/api/transactions/${transactionId}`);
@@ -40,6 +52,9 @@ const UpdateTransaction = () => {
         }
     };
 
+    /*
+    Getting all categories to load the dropdown categories of the form
+     */
     const fetchCategories = async () => {
         try {
             const response = await fetch(`${API_URL}/api/categories`);
@@ -53,6 +68,9 @@ const UpdateTransaction = () => {
     const handleChange = (e) => {
         const { name, value } = e.target;
         if (name === "category") {
+            /*
+            Find the category select from the category dropdown. Transaction has associated a Category object.
+             */
             const selectedCategory = categories.find(cat => cat.id === parseInt(value));
             setSelectedCategoryId(value);
             setForm({ ...form, [name]: selectedCategory });
@@ -63,10 +81,13 @@ const UpdateTransaction = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        await updateTransaction(id, form);
+        await updateTransaction(id, form); // calling the function to update a transaction
         navigate('/');
     };
 
+    /*
+    This function send the transaction form converted to json to update a transaction
+     */
     const updateTransaction = async (id, form) => {
         try {
             const response = await fetch(`${API_URL}/api/transactions/${id}`, {

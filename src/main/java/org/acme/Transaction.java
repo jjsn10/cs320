@@ -1,10 +1,12 @@
 package org.acme;
-
+/*
+Class Transaction has all method for CRUD operation
+This class has relationship one-to-many with class category.
+This class get the Foreign key from Category class
+@JoinColumn(name = "category_id")
+ */
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Temporal;
@@ -31,21 +33,36 @@ public class Transaction extends PanacheEntity {
     public Category category;
 
 
-    // Create
+    /*
+    Create a Transaction using the method persist
+    Parameter: Transaction Object
+     */
     public static void addTransaction(Transaction transaction) {
         transaction.persist();
     }
 
-    // Read
+    /*
+    Find and return a specific transaction using the method find()
+    Parameter: Long id
+    Return a Transaction Object
+     */
     public static Transaction findById(Long id) {
         return find("id", id).firstResult();
     }
-
+    /*
+    Getting All transactions using the method listAll()
+    Return a list of Transaction Objects
+     */
     public static List<Transaction> listAllTransactions() {
         return listAll();
     }
 
-    // Update
+    /*
+    Update a specific Transaction using the persist() method
+    Parameters: six parameters
+    This method use the findById() method to retrieve the transaction that
+    we want to update.
+     */
     public static void updateTransaction(Long id, String newDescription, BigDecimal newAmount, Date newDate, Integer newType, Category newCategory) {
         Transaction transaction = findById(id);
         if (transaction != null) {
@@ -58,7 +75,10 @@ public class Transaction extends PanacheEntity {
         }
     }
 
-    // Delete
+    /*
+    Delete a specific transaction using the method findById() to find the
+    transaction and the delete() method to delete the transaction found
+     */
     public static void deleteTransaction(Long id) {
         Transaction transaction = findById(id);
         if (transaction != null) {

@@ -1,5 +1,10 @@
 package org.acme;
 
+/*
+Class Category has all method for CRUD operation
+
+ */
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
@@ -18,21 +23,35 @@ public class Category extends PanacheEntity {
     @Column(length = 12)
     public String color;
 
-    // Create
+    /*
+    Create a category object and save to the database is the method persist()
+    Parameter: (Category) category
+     */
     public static void addCategory(Category category) {
         category.persist();
     }
 
-    // Read
+    /*
+    Find a specific Category Object using the method find().
+    Parameter: Long id
+    Return: Category Object
+     */
     public static Category findById(Long id) {
         return find("id", id).firstResult();
     }
 
+    /*
+    get a list of all categories using the method listAll().
+    Return a list of Category Objects
+     */
     public static List<Category> listAllCategories() {
         return listAll();
     }
 
-    // Update
+    /*
+    Update Category using persist method
+    Parameters: id, newName, newDescription, newColor
+     */
     public static void updateCategory(Long id, String newName,String newDescription, String newColor) {
         Category category = findById(id);
         if (category != null) {
@@ -43,7 +62,10 @@ public class Category extends PanacheEntity {
         }
     }
 
-    // Delete
+    /*
+    Delete a Category using delete() method
+    Parameters: id
+     */
     public static void deleteCategory(Long id) {
         Category category = findById(id);
         if (category != null) {

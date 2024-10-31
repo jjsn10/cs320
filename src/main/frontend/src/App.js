@@ -6,6 +6,10 @@ import './App.css';
 import { API_URL } from './config';
 
 const App = () => {
+  /*
+  Form fields and method to update the field after they
+  have been initiated with useState('')
+  */
   const [type, setType] = useState('');
   const [category, setCategory] = useState('');
   const [amount, setAmount] = useState('');
@@ -20,10 +24,17 @@ const App = () => {
     date: new Date().toISOString().split('T')[0] // Set current date in YYYY-MM-DD format
   });
 
+  /*
+  Variable for calculation
+  totalExpenses: store the addition of all expenses
+  totalIncomes: store the addition of all incomes
+  balance: store the value of the subtraction between totalIncomes - totalExpenses
+   */
   const [selectedCategoryId, setSelectedCategoryId] = useState(''); // New state for selected category ID
   const [balance, setBalance] = useState(0); // New state for balance
   const [totalExpenses, setTotalExpenses] = useState(0); // New state for total expenses
   const [totalIncomes, setTotalIncomes] = useState(0); // New state for total incomes
+
 
   useEffect(() => {
     fetchTransactions();
@@ -37,7 +48,9 @@ const App = () => {
   }, [transactions]);
 
 
-
+/*
+Getting all transaction from the backend and returning the result in json format
+ */
   const fetchTransactions = async () => {
     try {
       const response = await fetch(`${API_URL}/api/transactions`);
@@ -47,6 +60,10 @@ const App = () => {
       console.error('Error fetching transactions:', error);
     }
   };
+
+  /*
+  Getting all categories in json format to load the category dropdown of the form
+ */
   const fetchCategories = async () => {
     try {
       const response = await fetch(`${API_URL}/api/categories`); // Adjust the endpoint as needed
@@ -57,6 +74,9 @@ const App = () => {
     }
   };
 
+  /*
+  Create a transaction getting the values from the transaction form.
+ */
   const createTransaction = async () => {
     try {
       const response = await fetch(`${API_URL}/api/transactions`, {
@@ -81,7 +101,9 @@ const App = () => {
       console.error('Error creating transaction:', error);
     }
   };
-
+/*
+Update transaction getting the data from the transaction form
+ */
   const updateTransaction = async (id) => {
     try {
       const response = await fetch(`${API_URL}/api/transactions/${id}`, {
@@ -105,7 +127,9 @@ const App = () => {
       console.error('Error updating transaction:', error);
     }
   };
-
+  /*
+  Getting the id from the URL to get the transaction to delete.
+ */
   const deleteTransaction = async (id) => {
     try {
       await fetch(`${API_URL}/api/transactions/${id}`, {
@@ -131,11 +155,18 @@ const App = () => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };*/
 
+
   const handleSubmit = (e) => {
     e.preventDefault();
     form.id ? updateTransaction(form.id) : createTransaction();
   };
 
+  /*
+  Method to calculate the balance
+  type 1 = Income
+  type 2 = Expense
+ Getting balance subtracting income - expense
+   */
   const calculateBalance = () => {
     const income = transactions.filter(tx => tx.type === 1).reduce((acc, tx) => acc + parseFloat(tx.amount), 0);
     const expense = transactions.filter(tx => tx.type === 2).reduce((acc, tx) => acc + parseFloat(tx.amount), 0);
@@ -143,11 +174,19 @@ const App = () => {
     setBalance(balance.toFixed(2)); // Round to two decimal places
   };
 
+  /*
+  Adding of expenses
+  Type 2 = expenses
+   */
   const calculateTotalExpenses = () => {
     const expense = transactions.filter(tx => tx.type === 2).reduce((acc, tx) => acc + parseFloat(tx.amount), 0);
     setTotalExpenses(expense.toFixed(2)); // Round to two decimal places
   };
 
+/*
+Adding of incomes
+Type 1 = incomes
+ */
   const calculateTotalIncomes = () => {
     const income = transactions.filter(tx => tx.type === 1).reduce((acc, tx) => acc + parseFloat(tx.amount), 0);
     setTotalIncomes(income.toFixed(2)); // Round to two decimal places

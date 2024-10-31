@@ -1,13 +1,11 @@
 package org.acme;
 
-//import jakarta.ws.rs.GET;
-//import jakarta.ws.rs.POST;
-//import jakarta.ws.rs.PUT;
-//import jakarta.ws.rs.DELETE;
-//import jakarta.ws.rs.Path;
-//import jakarta.ws.rs.PathParam;
-//import jakarta.ws.rs.Produces;
-//import jakarta.ws.rs.Consumes;
+/*
+API requests for Category and Transaction Tables
+Classes Category and Transaction have all method from CRUD that are used
+in This class.
+*/
+
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -20,13 +18,14 @@ import jakarta.transaction.Transactional;
 @Consumes(MediaType.APPLICATION_JSON)
 public class GreetingResource {
 
+    //End Point for testing purpose
     @GET
     @Produces(MediaType.TEXT_PLAIN)
     public String tracker() {
         return "Hello RESTEasy";
     }
 
-    //Create
+    //Create a category record using addCategory() method from class Category
     @POST
     @Path("/categories")
     @Produces(MediaType.APPLICATION_JSON)
@@ -39,7 +38,10 @@ public class GreetingResource {
             return Response.status(Response.Status.CREATED).entity(category).build();
 
     }
-    // Read all
+    /*
+    Retrieve all categories using getAllCategories() method from class Category.
+    Return List of Category Objects
+     */
     @GET
     @Path("/categories")
     @Produces(MediaType.APPLICATION_JSON)
@@ -48,7 +50,10 @@ public class GreetingResource {
         return Category.listAllCategories();
     }
 
-    // Read by ID
+    /*
+    Get Category by id using getCategoryById() method from class Category.
+    Return a Category Object
+     */
     @GET
     @Path("/categories/{id}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -61,7 +66,10 @@ public class GreetingResource {
         return Response.ok(category).build();
     }
 
-    // Update
+    /*
+    Update a Category record using updateCategory method from class Category
+    Parameters: id and Category object
+    */
     @PUT
     @Path("/categories/{id}")
     @Transactional
@@ -77,7 +85,10 @@ public class GreetingResource {
         return Response.ok(category).build();
     }
 
-    // Delete
+    /*
+    Delete a Category record using delete() method from class Category
+    Parameter: id
+     */
     @DELETE
     @Path("/categories/{id}")
     @Transactional
@@ -90,9 +101,13 @@ public class GreetingResource {
         return Response.noContent().build();
     }
 
-    //Transactions
+    /*
+    API Endpoints for Transactions
+     */
 
-    // Create
+    /*
+    Create a transaction object using addTransaction method from class Transaction
+     */
     @POST
     @Path("/transactions")
     @Produces(MediaType.APPLICATION_JSON)
@@ -103,14 +118,21 @@ public class GreetingResource {
         return Response.status(Response.Status.CREATED).entity(transaction).build();
     }
 
-    // Read all
+    /*
+    Get all Transactions using getAllTransactions() method from class Transaction.
+    Return a List of Transaction Objects
+     */
     @GET
     @Path("/transactions")
     public List<Transaction> getAllTransactions() {
         return Transaction.listAllTransactions();
     }
 
-    // Read by ID
+    /*
+    Get a Transaction using getTransactionById() method from class Transaction.
+    Return a Transaction Object.
+    Parameter: id
+     */
     @GET
     @Path("/transactions/{id}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -123,7 +145,10 @@ public class GreetingResource {
         return Response.ok(transaction).build();
     }
 
-    // Update
+    /*
+    Update a Transaction Object using updateTransaction method from class Transaction.
+    Parameter: id
+     */
     @PUT
     @Path("/transactions/{id}")
     @Transactional
@@ -141,7 +166,10 @@ public class GreetingResource {
         return Response.ok(transaction).build();
     }
 
-    // Delete
+    /*
+    Delete a Transaction using deleteTransaction method from class Transaction.
+    Parameter: id
+     */
     @DELETE
     @Path("/transactions/{id}")
     @Transactional
